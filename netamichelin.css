@@ -1,0 +1,10 @@
+ul#ld-services,
+div#extra, div#sub,
+div.article-ad-1,
+div.amazlet-box,
+div.side, 
+div.sidewrapper,
+div.related-articles,
+div.footer-outer,
+td.table-side
+{ display:none !important; }

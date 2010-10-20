@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+body[nich] {
+   font-family:         "ＭＳ Ｐゴシック" !important;
+   font-size:           10pt !important;
+   line-height:         1.2em;
+}
+
+body[nich] div.nich-popup-float, 
+body[nich] div.nich-popup-fix {
+   border:              outset 1px gray;
+   padding:             3px;
+   background-color:    #F0FFFF !important;
+   color:               #000000;
+   font-size:           smaller;
+   max-width:           100%;
+   max-height:          100%;
+   overflow:            auto;
+}
+
+body[nich] div.nich-popup-fix {
+   background-color:    #FFFFE0  !important;
+}
+
+body[nich] span.nich-res-name { color:#804040; }
+body[nich] span.nich-res-name > b { color:green; }
+
+body[nich] div.nich-popup-float img, 
+body[nich] div.nich-popup-fix img {
+   max-width:           320px;
+   max-height:          240px;
+}

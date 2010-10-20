@@ -1,0 +1,6 @@
+table.data2_s tr:nth-last-of-type(even) td{ 
+    background-color:#ffffe0 !important; 
+}
+table.data2_s { 
+    font-size:80%; 
+}

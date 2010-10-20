@@ -1,0 +1,6 @@
+div.ladsby,
+div.ladsby+table,
+div.ladsby+table+table,
+div.ladsby+table+table+table,
+div#AreaSponsorSite
+{ display:none !important; }
