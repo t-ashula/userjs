@@ -11,8 +11,8 @@
          ( d.getElementsByTagName( 'head' )[ 0 ].children.length === 0 );
     };
     var binarray = function( d ){
-      var d_ = d;
-      this.getByteAt = function( i ){ return d_.charCodeAt( i ) & 0xff; };
+      this.d_ = d;
+      this.getByteAt = function( i ){ return this.d_.charCodeAt( i ) & 0xff; };
     };
     var getHead = function( url, cb ) {
       var xhr = new XMLHttpRequest();
@@ -27,7 +27,8 @@
       xhr.send( null );
     };
     var isImage = function( ba ){
-      var isJpeg = (function( bj ){ return bj.getByteAt( 0 ) == 0xff && bj.getByteAt( 1 ) == 0xd8; })( ba );
+      var isJpeg = (function( bj ){
+        return bj.getByteAt( 0 ) == 0xff && bj.getByteAt( 1 ) == 0xd8; })( ba );
       var isPng = (function( bp ) { 
         var h = [ bp.getByteAt( 0 ), bp.getByteAt( 1 ), bp.getByteAt( 2 ), bp.getByteAt( 3 ) ];
         return h[ 0 ] == 0x89 && h[ 1 ] == 0x50 && h[ 2 ] == 0x4e && h[ 3 ] == 0x47; })( ba );
