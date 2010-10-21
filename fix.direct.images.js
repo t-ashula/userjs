@@ -7,8 +7,10 @@
 (function(){
   window.addEventListener( 'load', function () {
     var flooding = function( d ){
-      return !location.pathname.match(/.(js|css|txt)$/) &&
-         ( d.getElementsByTagName( 'head' )[ 0 ].children.length === 0 );
+      return window === window.top
+        && !location.pathname.match(/.(js|css|txt)$/)
+        && ( d.getElementsByTagName( 'head' )[ 0 ].children.length === 0 )
+        && ( d.body.firstChild.innerText.indexOf('\uFFFD') !== -1);
     };
     var binarray = function( d ){
       this.d_ = d;
