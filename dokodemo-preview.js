@@ -1,10 +1,8 @@
 // ==UserScript==
-// @name dokodemopreview
+// @name どこでもプレビュー+
 // @author t.ashula ( office@ashula.info )
 // @namespace "http://ashula.info"
-// @version 0.1.13a
-// @ujs:document http://ashula.info/opera/tips/dokodemo_preview.html
-// @ujs:download http://ashula.info/files/opera/tips/dokodemo-preview.js
+// @version 0.1.12
 // ==/UserScript==
 
 (function(){
@@ -39,9 +37,8 @@
     var s = size ? size : "small";
     switch ( type ) {
       case IMG_TYPE.THUMBNAIL :
-        url = ( mal ) ? IMG_MW : 
-                        "http://www.thumbalizr.com/api/?url=" + href + "&width=" + ( 640 );
-                        //"http://shots.snap.com/preview/?key=0158296ffafc5b535a2ed0dc8c2af907" + "&size=" + s + "&url=" + href;
+        url = ( mal ) ? IMG_MW : "http://www.thumbalizr.com/api/?url=" + href + "&width=" + ( 640 );
+        //"http://shots.snap.com/preview/?key=0158296ffafc5b535a2ed0dc8c2af907" + "&size=" + s + "&url=" + href;
         break;
       case IMG_TYPE.FAVICON : 
       {
@@ -73,8 +70,8 @@
     thumb.style.border = "1px solid #BBBBBB";
     thumb.style.margin = "2px 4px 5px 0px";
     thumb.addEventListener( "load", function(){ this.style.height = "64px"; }, false );
-    thumb.addEventListener( "mouseover", function(){ this.style.height = "320px"; /*this.src = get_thumbnail_url( href, "large" );*/ }, false );
-    thumb.addEventListener( "mouseout", function(){ this.style.height = "64px"; /*this.src = get_thumbnail_url( href );*/ }, false );
+    thumb.addEventListener( "mouseover", function(){ this.style.height = "300px"; this.src = get_thumbnail_url( href, "large" ); }, false );
+    thumb.addEventListener( "mouseout", function(){ this.style.height = "64px"; this.src = get_thumbnail_url( href ); }, false );
 /**/
     return thumb;
   }
@@ -138,7 +135,6 @@
     "google", ".google.",
     {
       is_my_domain : function(loc) {
-        ods( this.name );
         if (loc.indexOf(".google.") == -1) { return false; }
         if (loc.indexOf("news.google.") >= 0) { return false; }
         if (loc.indexOf("blogsearch.google.") >= 0) { return false; }
@@ -179,7 +175,7 @@
           if ( url.match(/http.*\.yahoo.com\/click/i) ) { url = unescape(url.match(/u=(.*)&y=/)[1]); }
         }
         return url; },
-      and_more : function() { add_document_style( "#yschweb>OL>LI { list-style-position: inside; height: 105px; clear: both; } #west>OL>LI { height: 105px; clear: both; }" ); }
+      and_more : function() { add_document_style( "#yschweb>OL>LI { height: 105px; clear: both; } #west>OL>LI { height: 105px; clear: both; }" ); }
     } );
   filters.push( ygene );
 
@@ -209,13 +205,11 @@
       is_target : function(anc) {
         if ( ! this.is_target_def(anc) ) { return false; }
         if ( ! ( anc.hasAttribute("gping") )){ return false; }
-        if ( ! ( anc.parentNode.localName.match( /H3/i ) ) ) { return false; }
         for ( var parent = anc.parentNode; parent != null; parent = parent.parentNode ) {
           if ( is_attr_val( parent, "ID", "ads_topC" ) ) { return false; }
           if ( is_attr_val( parent, "ID", "ads_rightC" ) ) { return false; }
-          if ( is_attr_val( parent, "ID", "results" ) ) { return true; }
         }
-        return false; },
+        return true; },
       and_more : function(){ add_document_style( "LI>H3 { clear: both; }" ); }
     });
   filters.push( mslive );
@@ -355,12 +349,14 @@
   filters.push( delicious );
 
   function anythingpreview(url) {
-    for ( var i = 0, ftr; ftr = filters[ i ]; ++i ) {
-      if ( ftr.is_my_domain( url ) ) { break; }
+    var ftr = null;
+    for ( var i = 0, flen = filters.length; i < flen; ++i ) {
+      if ( filters[ i ].is_my_domain( url ) ) { ftr = filters[ i ]; break; }
     }
     if ( ftr == null ) { return; }
     var ancs = document.getElementsByTagName("a");
-    for ( var i = 0, anc; anc = ancs[ i ]; ++i ) {
+    for ( var i = 0, alen = ancs.length; i < alen; ++i ) {
+      var anc = ancs[ i ];
       if ( ftr.is_target( anc ) ) {
         if ( ftr.do_ins_thumb )   { ftr.ins_thumb( anc ); }
         if ( ftr.do_add_favicon ) { ftr.add_favicon( anc ); }
@@ -368,6 +364,4 @@
     }
   }  
   document.addEventListener('DOMContentLoaded', function(){ anythingpreview(window.location.href);}, false );
-//  document.addEventListener('load', function(){ anythingpreview(window.location.href);}, false );
-
 })();

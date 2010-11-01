@@ -4,17 +4,18 @@
 // @namespace http://ashula.info/
 // ==/UserScript==
 
-(function(){
-  window.addEventListener( 'load', function () {
-    var flooding = function( d ){
-      return window === window.top
-        && !location.pathname.match(/.(js|css|txt)$/)
-        && ( d.getElementsByTagName( 'head' )[ 0 ].children.length === 0 )
-        && ( d.body.firstChild.innerText.indexOf('\uFFFD') !== -1);
+(function( win, loc, doc ){
+  win.addEventListener( 'load', function () {
+    return;
+    var flooding = function( w_, l_, d_ ){
+      return w_ == w_.top
+        && !l_.pathname.match(/.(js|css|txt|html)$/)
+        && ( d_.getElementsByTagName( 'head' )[ 0 ].children.length === 0 )
+        && ( d_.body.innerHTML.indexOf('\uFFFD') !== -1);
     };
-    var binarray = function( d ){
-      this.d_ = d;
-      this.getByteAt = function( i ){ return this.d_.charCodeAt( i ) & 0xff; };
+    var binarray = function( data ){
+      this.data_ = data;
+      this.getByteAt = function( i ){ return this.data_.charCodeAt( i ) & 0xff; };
     };
     var getHead = function( url, cb ) {
       var xhr = new XMLHttpRequest();
@@ -36,15 +37,15 @@
         return h[ 0 ] == 0x89 && h[ 1 ] == 0x50 && h[ 2 ] == 0x4e && h[ 3 ] == 0x47; })( ba );
       return isJpeg || isPng;
     };
-    if ( flooding( document ) ) {
-      getHead( location.pathname, function( bary ){
+    if ( flooding( win, loc, doc ) ) {
+      getHead( loc.href, function( bary ){
         if ( isImage( bary ) ) {
-          document.body.innerHTML = '<img src="' + location.href + '" alt="" />';
+          doc.body.innerHTML = '<img src="' + loc.href + '" alt="" />';
         } 
         else {
-          document.body.innerHTML = '<p><a href="' + location.href +'">download</a></p>';
+          doc.body.innerHTML = '<p><a href="' + loc.href +'">download</a></p>';
         }
       });
     }
-  },false);
-})();
+  }, false );
+})( window, window.location, document );
