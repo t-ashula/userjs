@@ -3,14 +3,13 @@
 // @author t.ashula
 // @namespace http://ashula.info/
 // ==/UserScript==
-
 (function( win, loc, doc ){
-  var fixbin = function(){
-    var flooding = function( w_, l_, d_ ){
-      return w_ === w_.top
-        && !l_.pathname.match(/.(js|css|txt|html)$/)
-        && ( d_.getElementsByTagName( 'head' )[ 0 ].children.length === 0 )
-        && ( d_.body.innerHTML.indexOf('\uFFFD') !== -1);
+  win.addEventListener( 'load', function () {
+    var flooding = function(){
+      return win == win.self
+        && !loc.pathname.match(/.(js|css|txt|html)$/)
+        && ( doc.getElementsByTagName( 'head' )[ 0 ].children.length === 0 )
+        && ( doc.body.innerHTML.indexOf('\uFFFD') !== -1);
     };
     var binarray = function( data ){
       this.data_ = data;
@@ -36,7 +35,7 @@
         return h[ 0 ] == 0x89 && h[ 1 ] == 0x50 && h[ 2 ] == 0x4e && h[ 3 ] == 0x47; })( ba );
       return isJpeg || isPng;
     };
-    if ( flooding( win, loc, doc ) ) {
+    if ( flooding() ) {
       getHead( loc.href, function( bary ){
         if ( isImage( bary ) ) {
           doc.body.innerHTML = '<img src="' + loc.href + '" alt="" />';
@@ -45,7 +44,6 @@
           doc.body.innerHTML = '<p><a href="' + loc.href +'">download</a></p>';
         }
       });
-    }  
-  };
-  win.addEventListener( 'load', function () { fixbin(); }, false );
+    }/* */
+  }, false );
 })( window, window.location, document );
