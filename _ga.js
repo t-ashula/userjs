@@ -8,4 +8,9 @@
           ,_trackPageview : function(){}
           ,_setCustomVar : function(){}
         }; } }; }
+  if (w._gaq === undefined ){
+    w._gaq = {
+      push : function(){}
+    };
+  }
 })(window);
