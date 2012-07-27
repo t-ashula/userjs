@@ -7,6 +7,8 @@
           ,_trackEvent: function(){}
           ,_trackPageview : function(){}
           ,_setCustomVar : function(){}
+          ,_setDomainName : function(){}
+          ,_setVer: function(){}
         }; } }; }
   if (w._gaq === undefined ){
     w._gaq = {
@@ -14,3 +16,4 @@
     };
   }
 })(window);
+//Uncaught exception: TypeError: 'pageTracker._setDomainName' is not a function

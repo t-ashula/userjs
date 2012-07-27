@@ -7,6 +7,8 @@
 // @version 0.4
 // @ujs:document http://ashula.info/opera/tips/embed_fix.html
 // @ujs:download http://ashula.info/files/opera/tips/embed_fix.user.js
+// @exclude http://www.dailymotion.com/video/*
+// @exclude http://preferred.jp/*
 // ==/UserScript==
 
 (function (){
@@ -21,14 +23,16 @@
     if ( pa.tagName.match(/object/i) ) { pa = pa.parentNode; }
     if ( w == -100 || w == "100%" ){ 
       var nw = pa.style.width;
-      if ( nw == "100%" || nw == -100 || nw == "" ) { nw = window.innerWidth; }
+      if ( /*nw == "100%" ||*/ nw == -100 || nw == "" ) { nw = window.innerWidth; }
       emb.setAttribute("width", nw );
       opera.postError("embfix : fix width to " + nw );
     }
     if ( h == -100 || h == "100%" ){ 
       var nh = pa.style.height; 
-      if ( nh == "100%" || nh == -100 || nh == "" ) { nh = window.innerHeight; }
+      if ( /**/ nh == "100%" ||/**/ nh == -100 || nh == "" ) { nh = window.innerHeight; }
       emb.setAttribute("height", nh );
+      emb.style.height = nh;
+      pa.style.height = nh;
       opera.postError("embfix : fix height to " + nh );
     }
     var ob = emb.parentNode;
